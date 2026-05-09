@@ -29,6 +29,8 @@ Displays a welcome message and identifies which container handled the request.
 ### `/count`
 Tracks and increments visitor count using Redis.
 
+<img width="535" height="348" alt="Image" src="https://github.com/user-attachments/assets/654a01c7-1f0f-4583-a01d-0b770971e691" />
+
 Example:
 ```text
 You are visitor number: 15
