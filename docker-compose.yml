@@ -1,6 +1,6 @@
 services:
   web:
-    image: challenge-app:latest  
+    image: challenge-app:v2
     expose:
       - "5000"
     depends_on:
