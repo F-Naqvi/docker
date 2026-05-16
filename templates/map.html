@@ -40,45 +40,47 @@
       inset: 0;
       z-index: 0;
       opacity: 0;
-      transition: opacity 2s ease;
+      transition: opacity 3s ease;
+      background: var(--bg);
     }
 
     #map.visible { opacity: 1; }
 
-    /* Hide all leaflet UI */
-    .leaflet-control-container { display: none; }
-    .leaflet-attribution-flag  { display: none !important; }
+    /* Strip all leaflet UI */
+    .leaflet-control-container,
+    .leaflet-attribution-flag { display: none !important; }
 
-    /* Vignette — strong on edges so map bleeds into bg */
+    /* Style the tile layer to match — ocean dark, land slightly lighter */
+    .leaflet-tile-pane { filter: brightness(0.55) saturate(0.3) hue-rotate(180deg); }
+
+    /* Vignette */
     .vignette {
       position: fixed;
       inset: 0;
       z-index: 5;
-      background: radial-gradient(ellipse at center, transparent 35%, rgba(8,12,16,0.6) 65%, rgba(6,10,14,0.95) 100%);
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(8,12,16,0.55) 60%, rgba(6,10,14,0.97) 100%);
       pointer-events: none;
     }
 
-    /* Top edge fade */
     .fade-top {
       position: fixed;
       top: 0; left: 0; right: 0;
-      height: 120px;
+      height: 140px;
       z-index: 6;
-      background: linear-gradient(to bottom, rgba(8,12,16,1) 0%, transparent 100%);
+      background: linear-gradient(to bottom, rgba(13,17,23,1) 0%, transparent 100%);
       pointer-events: none;
     }
 
-    /* Bottom edge fade */
     .fade-bottom {
       position: fixed;
       bottom: 0; left: 0; right: 0;
-      height: 120px;
+      height: 140px;
       z-index: 6;
-      background: linear-gradient(to top, rgba(8,12,16,1) 0%, transparent 100%);
+      background: linear-gradient(to top, rgba(13,17,23,1) 0%, transparent 100%);
       pointer-events: none;
     }
 
-    /* Nav links */
+    /* Nav */
     .back {
       position: fixed;
       top: 2rem;
@@ -100,61 +102,25 @@
 
     .back:hover { color: var(--text-dim); }
 
-    /* Label */
+    /* Bottom label */
     .label {
       position: fixed;
-      bottom: 2.8rem;
+      bottom: 2.5rem;
       left: 0; right: 0;
       text-align: center;
       z-index: 10;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 300;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       letter-spacing: 0.2em;
       color: var(--text-ghost);
-      animation: fadein 6s ease forwards;
-      opacity: 0;
       pointer-events: none;
+      opacity: 0;
+      transition: opacity 2s ease;
     }
 
-    @keyframes fadein {
-      0%   { opacity: 0; }
-      100% { opacity: 1; }
-    }
-
-    /* Pulsing dot marker */
-    .presence-dot {
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      background: rgba(140, 190, 210, 0.9);
-      box-shadow: 0 0 12px rgba(140,190,210,0.8), 0 0 30px rgba(140,190,210,0.4);
-      animation: presence-pulse 3s ease-in-out infinite;
-      position: relative;
-    }
-
-    .presence-dot::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      border: 1px solid rgba(140,190,210,0.4);
-      animation: presence-ring 3s ease-out infinite;
-    }
-
-    @keyframes presence-pulse {
-      0%,100% { box-shadow: 0 0 12px rgba(140,190,210,0.8), 0 0 30px rgba(140,190,210,0.4); opacity: 0.9; }
-      50%      { box-shadow: 0 0 20px rgba(140,190,210,1),   0 0 50px rgba(140,190,210,0.6); opacity: 1; }
-    }
-
-    @keyframes presence-ring {
-      0%   { width: 12px; height: 12px; opacity: 0.6; }
-      100% { width: 48px; height: 48px; opacity: 0; }
-    }
-
-    /* Loading state */
+    /* Locating text */
     .locating {
       position: fixed;
       top: 50%; left: 50%;
@@ -164,27 +130,60 @@
       font-style: italic;
       font-weight: 300;
       font-size: 0.9rem;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.3em;
       color: var(--text-ghost);
-      animation: fadein 1s ease forwards;
+      animation: fadein 2s ease forwards;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 1.5s ease;
+    }
+
+    @keyframes fadein {
+      0%   { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    /* Presence dot */
+    .presence-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(140, 190, 210, 0.9);
+      box-shadow: 0 0 10px rgba(140,190,210,0.8), 0 0 25px rgba(140,190,210,0.4);
+      animation: dot-pulse 4s ease-in-out infinite;
+      position: relative;
+    }
+
+    .presence-dot::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(140,190,210,0.35);
+      animation: dot-ring 4s ease-out infinite;
+    }
+
+    @keyframes dot-pulse {
+      0%,100% { opacity: 0.8; box-shadow: 0 0 10px rgba(140,190,210,0.8), 0 0 25px rgba(140,190,210,0.3); }
+      50%      { opacity: 1;   box-shadow: 0 0 16px rgba(140,190,210,1),   0 0 40px rgba(140,190,210,0.5); }
+    }
+
+    @keyframes dot-ring {
+      0%   { width: 10px; height: 10px; opacity: 0.5; }
+      100% { width: 52px; height: 52px; opacity: 0; }
     }
   </style>
 </head>
 <body>
 
   <div class="cursor" id="cursor"></div>
-
   <div id="map"></div>
-
   <div class="vignette"></div>
   <div class="fade-top"></div>
   <div class="fade-bottom"></div>
 
   <a href="/" class="back">← return to stillness</a>
-  <div class="label" id="label">finding you</div>
-
+  <div class="label" id="label"></div>
   <div class="locating" id="locating">locating presence...</div>
 
   <script>
@@ -195,7 +194,7 @@
       cursor.style.top  = e.clientY + 'px';
     });
 
-    // Init map — dark matter tiles
+    // Map — no labels, outline only via stamen toner-lite, max zoom 6 (country level)
     const map = L.map('map', {
       zoomControl:        false,
       attributionControl: false,
@@ -204,44 +203,50 @@
       doubleClickZoom:    false,
       touchZoom:          false,
       keyboard:           false,
+      maxZoom:            6,
+      minZoom:            2,
     }).setView([20, 0], 2);
 
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      subdomains: 'abcd',
-      maxZoom: 19,
+    // Stamen toner-background — land outlines only, no labels, no roads
+    L.tileLayer('https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png', {
+      maxZoom: 6,
     }).addTo(map);
 
-    // Custom dot marker
     const dotIcon = L.divIcon({
       className: '',
       html: '<div class="presence-dot"></div>',
-      iconSize: [12, 12],
-      iconAnchor: [6, 6],
+      iconSize: [10, 10],
+      iconAnchor: [5, 5],
     });
 
-    // Fetch location from IP — no permission needed, city-level
+    const locatingEl = document.getElementById('locating');
+    const labelEl    = document.getElementById('label');
+
     fetch('https://ipapi.co/json/')
       .then(r => r.json())
       .then(data => {
-        const lat = data.latitude;
-        const lng = data.longitude;
-        const city = data.city || 'somewhere';
+        const lat = data.latitude  || 20;
+        const lng = data.longitude || 0;
 
-        // Fly to location smoothly
-        map.flyTo([lat, lng], 9, { duration: 3, easeLinearity: 0.1 });
+        // Smooth fly to country level (zoom 5)
+        map.flyTo([lat, lng], 5, {
+          duration:       4,
+          easeLinearity: 0.05,
+        });
 
         setTimeout(() => {
           L.marker([lat, lng], { icon: dotIcon }).addTo(map);
           document.getElementById('map').classList.add('visible');
-          document.getElementById('locating').style.opacity = '0';
-          document.getElementById('label').textContent = `you are here. for now.`;
-        }, 1500);
+          locatingEl.style.opacity = '0';
+          labelEl.textContent      = 'you are here. for now.';
+          labelEl.style.opacity    = '1';
+        }, 2500);
       })
       .catch(() => {
-        // Fallback — just show the world map
         document.getElementById('map').classList.add('visible');
-        document.getElementById('locating').style.opacity = '0';
-        document.getElementById('label').textContent = 'presence undetected.';
+        locatingEl.style.opacity = '0';
+        labelEl.textContent      = 'presence undetected.';
+        labelEl.style.opacity    = '1';
       });
   </script>
 </body>
