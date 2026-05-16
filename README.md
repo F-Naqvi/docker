@@ -24,8 +24,12 @@ The Flask app contains two routes:
 ### `/`
 Displays a welcome message and identifies which container handled the request.
 
+<img width="479" height="296" alt="Image" src="https://github.com/user-attachments/assets/f0552d7d-7201-499f-b096-ccc6bd9db779" />
+
 ### `/count`
 Tracks and increments visitor count using Redis.
+
+<img width="535" height="348" alt="Image" src="https://github.com/user-attachments/assets/654a01c7-1f0f-4583-a01d-0b770971e691" />
 
 Example:
 ```text
